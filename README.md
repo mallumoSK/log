@@ -2,9 +2,7 @@
 
 ## simple kotlin library for logging android and desktop projects
 
-Librawy available at:
-
-## [maven gradle](https://github.com/mallumoSK/log/packages/)
+## Library available at: [maven gradle](https://github.com/mallumoSK/log/packages/)
 
 ### library dependency
 ```groovy
