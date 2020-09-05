@@ -4,8 +4,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.0'
 }
 
-group 'tk.mallumo.log'
-version '8.0.0'
+group 'tk.mallumo'
+version '8.0.2'
 
 repositories {
     mavenCentral()
@@ -17,29 +17,27 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-
-
 publishing {
     repositories {
         maven {
-            url "https://gitlab.com/api/v4/groups/kt-lib/-/packages/maven"
-            name "GitLab"
-            credentials(HttpHeaderCredentials) {
-                name = 'Private-Token'
-                value = gitLabPrivateToken
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/mallumoSK/log")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
             }
-            authentication {
-                header(HttpHeaderAuthentication)
-            }
+        }
+        maven{
+            url = uri("/tmp/___")
         }
     }
     publications {
-        maven(MavenPublication) {
+        gpr(MavenPublication) {
             groupId = "$group"
             artifactId = "${project.name}"
             version = "$version"
-            from components.java
             artifact kotlinSourcesJar
+            from(components.java)
         }
     }
 }
