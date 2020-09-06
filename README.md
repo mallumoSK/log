@@ -1,8 +1,24 @@
 # log
 
-## simple kotlin library for logging android and desktop projects
+## Simple kotlin library for logging android and desktop projects
 
-## Library available at: [maven gradle](https://github.com/mallumoSK/log/packages/386680)
+## Access [LATEST VERSION](https://github.com/mallumoSK/log/packages/386680)
+```groovy
+repositories {
+    maven {
+        name = "GitHubPackages"
+        url = uri("https://maven.pkg.github.com/mallumoSK/log")
+        credentials {
+            username = "mallumoSK"
+            password = "92e4e29cfeb3fef0b23b8fe4101acf4cd504a79c"
+        }
+    }
+}
+
+dependencies {
+    implementation "tk.mallumo:log:$version_log"
+}
+```
 
 ### library dependency
 ```groovy
@@ -16,7 +32,7 @@ tk.mallumo.log.LOGGER_IS_ENABLED
 ```
 
 ### Enable / Disable by static variable:
-####  if is library user in android project BUT in junit test, this prevent writing output to android logger output
+####  if is library used in android project BUT in junit test, this prevent writing output to android logger output
 ```kotlin
 tk.mallumo.log.LOGGER_CONSOLE_FORCE
 ```
@@ -41,7 +57,10 @@ tk.mallumo.log.log(input = Input(), prettyPrin = false)
 logTimeSpendStampStart()
 Thread.sleep(200)
 logTimeSpendStamp()
+Thread.sleep(1)
+logTimeSpendStamp()
 //in console: 
 // (LoggerTest.kt:20) timeStamp--> lastStamp logging start
 // (LoggerTest.kt:22) timeStamp--> lastStamp: 200ms
+// (LoggerTest.kt:24) timeStamp--> lastStamp: 1ms
 ```
