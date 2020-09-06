@@ -23,9 +23,9 @@ tk.mallumo.log.LOGGER_CONSOLE_FORCE
 
 ## Usage 1
 ```kotlin
-tk.mallumo.log.log() // in console will be output ([Name-Of-Class].kt:[Souce-Code-Line-Nuber]) [name-of-method]--> [three-dash]
+tk.mallumo.log.log("123") // in console will be output ([Name-Of-Class].kt:[Souce-Code-Line-Nuber]) [name-of-method]--> [input]
 //in console: 
-// (LoggerTest.kt:20) testFun--> ---
+// (LoggerTest.kt:20) testFun--> 123
 ```
 
 ## Usage 2
