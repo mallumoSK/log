@@ -18,7 +18,7 @@ apply plugin: 'com.bmuschko.nexus'
 
 archivesBaseName = 'log'
 group 'tk.mallumo'
-version '8.1.0'
+version '8.2.0'
 
 repositories {
     jcenter()
@@ -76,14 +76,14 @@ modifyPom {
 
 publishing {
     repositories {
-        maven {
-            name = "mallumo.jfrog.io"
-            url = project.findProperty("jfrog.url")
-            credentials {
-                username = project.findProperty("jfrog.name")
-                password = project.findProperty("jfrog.pass")
-            }
-        }
+//        maven {
+//            name = "mallumo.jfrog.io"
+//            url = project.findProperty("jfrog.url")
+//            credentials {
+//                username = project.findProperty("jfrog.name")
+//                password = project.findProperty("jfrog.pass")
+//            }
+//        }
         maven{
             url = uri("/tmp/___")
         }

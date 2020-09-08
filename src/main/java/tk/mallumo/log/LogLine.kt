@@ -65,7 +65,6 @@ fun log() {
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
-@Suppress("unused")
 fun logTimeSpendStampStart() {
     lastStamp = System.currentTimeMillis()
     logData("lastStamp logging start", false)
@@ -91,7 +90,6 @@ fun logTimeSpendStampStart() {
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
-@Suppress("unused")
 fun logTimeSpendStamp() {
     logData("lastStamp: ${System.currentTimeMillis() - lastStamp}ms", false)
     lastStamp = System.currentTimeMillis()
@@ -108,43 +106,66 @@ fun logTimeSpendStamp() {
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
-fun log(input: Any?, prettyPrint: Boolean = true) {
+fun log(input: Any?, prettyPrint: Boolean = true) =
+    logWithOffset(input, 0, prettyPrint)
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param offset if is logging used inside nested lambda, or inside library this is useful tool for logging upper level
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWithOffset(input: Any?, offset: Int, prettyPrint: Boolean = true) {
     if (input != null && input is Exception) {
-        logData(input.trace, false)
+        logData(input.trace, false, offset)
     } else {
-        logData(input, prettyPrint)
+        logData(input, prettyPrint, offset)
     }
 }
 
 /**
- * ### If is logger enabled transfer input into json and write into console / android logger
+ * ### If is logger enabled transfer input into json and write into console / android logger * @param offset = if is logger used inside nested lambda, or inside library this is useful tool for logging upper level
+ * @param offset = if is logging used inside nested lambda, or inside library this is useful tool for logging upper level
  * @see writeConsole
  * @see getCurrentThreadTraceLine
  * @see toJson
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
-private fun logData(input: Any?, prettyPrint: Boolean) {
-    var obj = input
+private fun logData(input: Any?, prettyPrint: Boolean, offset: Int = 0) {
+
     if (!LOGGER_IS_ENABLED) {
         return
     }
-    if (obj == null) {
-        obj = "data null"
-    }
-    val item = try {
-        if (obj is String) {
-            obj
-        } else {
-            obj.toJson(prettyPrint)
+
+    val traceLine = getCurrentThreadTraceLine(offset)
+    writeConsole(
+        key = "${traceLine[0]} ${traceLine[1]}",
+        value = input.extractMessage(prettyPrint)
+    )
+
+}
+
+/**
+ * ### transfer any object to readable string, in critical situations as OutOfMemory is only converted into class signature
+ */
+private fun Any?.extractMessage(prettyPrint: Boolean): String {
+    this ?: return "data null"
+
+    return when (this) {
+        is String -> this
+        else -> try {
+            this.toJson(prettyPrint)
+        } catch (e: Throwable) {
+            toString()
         }
-    } catch (e: Exception) {
-        obj.toString()
     }
-
-    val traceLine = getCurrentThreadTraceLine()
-    writeConsole("${traceLine[0]} ${traceLine[1]}", item)
-
 }
 
 /**
@@ -167,15 +188,22 @@ private fun writeConsole(key: String, value: String) {
 /**
  * ### extract info about source code line
  *
+ * @param offset = if is logger used inside nested lambda, or inside library this is useful tool for logging upper level
  * @return trace line info of structure
  * - index [0] source file name and line in code
  * - index [1] name of function
  */
-fun getCurrentThreadTraceLine(): Array<String> = try {
+fun getCurrentThreadTraceLine(offset: Int = 0): Array<String> = try {
 
     val data = Thread.currentThread().stackTrace
     val indexLL = data.indexOfLast { it.fileName == "LogLine.kt" }
-    val element = data[indexLL + 1]
+    val element = (indexLL + 1 + offset).let { stackindex ->
+        if (stackindex > data.lastIndex) {
+            data.last()
+        } else {
+            data[stackindex]
+        }
+    }
 
     arrayOf("(${element.fileName}:${element.lineNumber})", "${element.methodName}-->")
 } catch (e: Exception) {

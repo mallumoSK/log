@@ -40,6 +40,20 @@ class LoggerTest {
     }
 
     @Test
+    fun nestedFunctions() {
+        println("\nnestedFunctions()")
+        fun nested2() {
+            logWithOffset("---", 2, prettyPrint = false)
+        }
+
+        fun nested1() {
+            nested2()
+        }
+        nested1()
+        println("\nnestedFunctions()")
+    }
+
+    @Test
     fun data() {
         println("\ndata()")
         log(Input(), false)
