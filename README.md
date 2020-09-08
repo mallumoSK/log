@@ -2,21 +2,19 @@
 
 ## Simple kotlin library for logging android and desktop projects
 
-## Access [LATEST VERSION](https://github.com/mallumoSK/log/packages/386680)
+
+
+![https://mallumo.jfrog.io/artifactory/gradle-dev-local/tk/mallumo/log/](https://img.shields.io/maven-metadata/v?color=%234caf50&metadataUrl=https%3A%2F%2Fmallumo.jfrog.io%2Fartifactory%2Fgradle-dev-local%2Ftk%2Fmallumo%2Flog%2Fmaven-metadata.xml&style=for-the-badge "Version")
+
 ```groovy
 repositories {
     maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/mallumoSK/log")
-        credentials {
-            username = "mallumoSK"
-            password = "92e4e29cfeb3fef0b23b8fe4101acf4cd504a79c"
-        }
+        url = uri("https://mallumo.jfrog.io/artifactory/gradle-dev-local")
     }
 }
 
 dependencies {
-    implementation "tk.mallumo:log:$version_log"
+    implementation "tk.mallumo:log:$version"
 }
 ```
 
