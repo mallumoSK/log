@@ -43,57 +43,62 @@ nexus {
     snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
 }
 
+//noinspection GroovyAssignabilityCheck
 modifyPom {
+    //noinspection GroovyAssignabilityCheck
     project {
-        name 'log'
-        description 'Simple kotlin library for logging android and desktop projects.'
-        url 'https://github.com/mallumoSK/log'
-        inceptionYear '2020'
+        name = 'log'
+        description = 'Simple kotlin library for logging android and desktop projects.'
+        url = 'https://github.com/mallumoSK/log'
+        inceptionYear = '2020'
 
         scm {
-            url 'https://github.com/mallumoSK/log'
-            connection 'scm:https://github.com/mallumoSK/log.git'
-            developerConnection 'scm:git://github.com/mallumoSK/log.git'
+            url = 'https://github.com/mallumoSK/log'
+            connection = 'scm:https://github.com/mallumoSK/log.git'
+            developerConnection = 'scm:git://github.com/mallumoSK/log.git'
         }
 
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                distribution 'repo'
-            }
+        licenses.license {
+            name = 'The Apache Software License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution = 'repo'
         }
 
-        developers {
-            developer {
-                id 'mallumo'
-                name 'mallumo'
-                email 'develop.mallumo@gmail.com'
-            }
+        developers.developer {
+            id = 'mallumo'
+            name = 'mallumo'
+            email = 'develop.mallumo@gmail.com'
         }
     }
 }
 
 publishing {
     repositories {
-//        maven {
-//            name = "mallumo.jfrog.io"
-//            url = project.findProperty("jfrog.url")
-//            credentials {
-//                username = project.findProperty("jfrog.name")
-//                password = project.findProperty("jfrog.pass")
-//            }
-//        }
-        maven{
+        maven {
+            name = "mallumo.jfrog.io"
+            url = project.findProperty("jfrog.url")
+            credentials {
+                username = project.findProperty("jfrog.name")
+                password = project.findProperty("jfrog.pass")
+            }
+        }
+        maven {
             url = uri("/tmp/___")
         }
     }
+
     publications {
+        //noinspection GroovyAssignabilityCheck
         gpr(MavenPublication) {
+            //noinspection GroovyAssignabilityCheck
             groupId = "$group"
+            //noinspection GroovyAssignabilityCheck
             artifactId = "${project.name}"
+            //noinspection GroovyAssignabilityCheck
             version = "$version"
+            //noinspection GroovyAssignabilityCheck
             artifact kotlinSourcesJar
+            //noinspection GroovyAssignabilityCheck
             from(components.java)
         }
     }
