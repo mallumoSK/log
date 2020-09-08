@@ -16,10 +16,10 @@ class LoggerTest {
         LOGGER_IS_ENABLED = false
         println("\nenableDisable()")
         println("disabled:")
-        log()
+        log("---")
         LOGGER_IS_ENABLED = true
         println("enabled:")
-        log()
+        log("---")
         println("enableDisable()\n")
     }
 
@@ -35,7 +35,7 @@ class LoggerTest {
     @Test
     fun line() {
         println("\nline()")
-        log()
+        log("---")
         println("line()\n")
     }
 
