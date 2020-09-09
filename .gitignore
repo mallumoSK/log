@@ -27,3 +27,4 @@ hs_err_pid*
 /gradle/wrapper/
 /local.properties
 /gradle.properties
+/build.gradle.backup

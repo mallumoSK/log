@@ -1,20 +1,9 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-    }
-}
-
 plugins {
     id 'java'
     id 'maven-publish'
     id 'maven'
     id 'org.jetbrains.kotlin.jvm' version '1.4.0'
 }
-
-apply plugin: 'com.bmuschko.nexus'
 
 archivesBaseName = 'log'
 group 'tk.mallumo'
@@ -29,47 +18,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation 'com.google.code.gson:gson:2.8.6'
     testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-extraArchive {
-    sources = true
-    tests = true
-    javadoc = true
-}
-
-nexus {
-    sign = true
-    repositoryUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-    snapshotRepositoryUrl = 'https://oss.sonatype.org/content/repositories/snapshots/'
-}
-
-//noinspection GroovyAssignabilityCheck
-modifyPom {
-    //noinspection GroovyAssignabilityCheck
-    project {
-        name = 'log'
-        description = 'Simple kotlin library for logging android and desktop projects.'
-        url = 'https://github.com/mallumoSK/log'
-        inceptionYear = '2020'
-
-        scm {
-            url = 'https://github.com/mallumoSK/log'
-            connection = 'scm:https://github.com/mallumoSK/log.git'
-            developerConnection = 'scm:git://github.com/mallumoSK/log.git'
-        }
-
-        licenses.license {
-            name = 'The Apache Software License, Version 2.0'
-            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            distribution = 'repo'
-        }
-
-        developers.developer {
-            id = 'mallumo'
-            name = 'mallumo'
-            email = 'develop.mallumo@gmail.com'
-        }
-    }
 }
 
 publishing {
