@@ -45,19 +45,19 @@ private val loggerMethod: Method? by lazy {
     }
 }
 
-/**
- * ### write to console output / android logger output three dashes
- * @see log with parameters
- * @see LOGGER_IS_ENABLED
- * @see LOGGER_CONSOLE_FORCE
- */
-@Deprecated(
-    message = "use log method with parameters",
-    replaceWith = ReplaceWith("log(\"---\")")
-)
-fun log() {
-    logData("---", false)
-}
+///**
+// * ### write to console output / android logger output three dashes
+// * @see log with parameters
+// * @see LOGGER_IS_ENABLED
+// * @see LOGGER_CONSOLE_FORCE
+// */
+//@Deprecated(
+//    message = "use log method with parameters",
+//    replaceWith = ReplaceWith("log(\"---\")")
+//)
+//fun log() {
+//    logData("---", false)
+//}
 
 /**
  * ### start point for measure time in milliseconds
