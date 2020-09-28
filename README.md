@@ -20,7 +20,7 @@ dependencies {
 
 ### library dependency
 ```groovy
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.10"
     implementation 'com.google.code.gson:gson:2.8.6'
 ```
 
