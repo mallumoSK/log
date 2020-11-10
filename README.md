@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    implementation "tk.mallumo:log:$version"
+    implementation "tk.mallumo:log:$version_log"
 }
 ```
 
