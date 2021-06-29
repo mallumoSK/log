@@ -16,26 +16,17 @@ class LoggerTest {
         LOGGER_IS_ENABLED = false
         println("\nenableDisable()")
         println("disabled:")
-        log("---")
+        logDEBUG("---")
         LOGGER_IS_ENABLED = true
         println("enabled:")
-        log("---")
+        logERROR("---")
         println("enableDisable()\n")
-    }
-
-    @Test
-    fun timeStamp() {
-        println("\ntimeStamp()")
-        logTimeSpendStampStart()
-        Thread.sleep(200)
-        logTimeSpendStamp()
-        println("timeStamp()\n")
     }
 
     @Test
     fun line() {
         println("\nline()")
-        log("---")
+        logWARN("---")
         println("line()\n")
     }
 
@@ -43,7 +34,7 @@ class LoggerTest {
     fun nestedFunctions() {
         println("\nnestedFunctions()")
         fun nested2() {
-            logWithOffset("---", 2, prettyPrint = false)
+            logWithOffsetDEBUG("---", 2, prettyPrint = false)
         }
 
         fun nested1() {
@@ -56,14 +47,14 @@ class LoggerTest {
     @Test
     fun data() {
         println("\ndata()")
-        log(Input(), false)
+        logWARN(Input(), false)
         println("data()\n")
     }
 
     @Test
     fun dataNice() {
         println("\ndataNice()")
-        log(Input())
+        logWTF(Input())
         println("dataNice()\n")
     }
 }

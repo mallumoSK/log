@@ -6,6 +6,35 @@ import java.io.StringWriter
 import java.lang.reflect.Method
 import java.net.UnknownHostException
 
+private enum class Level(val key: String) {
+    VERBOSE("v"),
+
+    /**
+     * Priority constant for the println method; use Log.d.
+     */
+    DEBUG("d"),
+
+    /**
+     * Priority constant for the println method; use Log.i.
+     */
+    INFO("i"),
+
+    /**
+     * Priority constant for the println method; use Log.w.
+     */
+    WARN("w"),
+
+    /**
+     * Priority constant for the println method; use Log.e.
+     */
+    ERROR("e"),
+
+    /**
+     * Priority constant for the println method.
+     */
+    WTF("wtf")
+}
+
 /**
  *
  * ### Global DISABLE / ENABLE logging
@@ -24,11 +53,6 @@ var LOGGER_IS_ENABLED = true
 var LOGGER_CONSOLE_FORCE = false
 
 /**
- * ### time-counter
- */
-private var lastStamp: Long = 0
-
-/**
  * ### check if is library used in android project
  */
 private fun isAndroid(): Boolean = loggerMethod != null && !LOGGER_CONSOLE_FORCE
@@ -37,62 +61,14 @@ private fun isAndroid(): Boolean = loggerMethod != null && !LOGGER_CONSOLE_FORCE
  * ### method reference of android function ```android.util.Log.e```
  */
 private val loggerMethod: Method? by lazy {
-    try {
-        Class.forName("android.util.Log")
-            .getDeclaredMethod("e", String::class.java, String::class.java)
-    } catch (e: Throwable) {
-        null
-    }
+    extractAndroidLogMethod(Level.ERROR)
 }
 
-///**
-// * ### write to console output / android logger output three dashes
-// * @see log with parameters
-// * @see LOGGER_IS_ENABLED
-// * @see LOGGER_CONSOLE_FORCE
-// */
-//@Deprecated(
-//    message = "use log method with parameters",
-//    replaceWith = ReplaceWith("log(\"---\")")
-//)
-//fun log() {
-//    logData("---", false)
-//}
-
-/**
- * ### start point for measure time in milliseconds
- * @see logTimeSpendStamp
- * @see LOGGER_IS_ENABLED
- * @see LOGGER_CONSOLE_FORCE
- */
-fun logTimeSpendStampStart() {
-    lastStamp = System.currentTimeMillis()
-    logData("lastStamp logging start", false)
-
-}
-
-/**
- * ### entry point for measure time in milliseconds
- * ## Example
- * ```
- * logTimeSpendStampStart() //only time counter reset > "lastStamp logging start"
- *
- * repeat(20){
- *      delay(20) // do some job
- * }
- *
- * logTimeSpendStamp() // print into console spend time and reset counter > "lastStamp: (400ms)"
- *
- * delay(300) // do some job
- *
- * logTimeSpendStamp()  // print into console spend time and reset counter > "lastStamp: (300ms)"
- * ```
- * @see LOGGER_IS_ENABLED
- * @see LOGGER_CONSOLE_FORCE
- */
-fun logTimeSpendStamp() {
-    logData("lastStamp: ${System.currentTimeMillis() - lastStamp}ms", false)
-    lastStamp = System.currentTimeMillis()
+private fun extractAndroidLogMethod(level: Level): Method? = try {
+    Class.forName("android.util.Log")
+        .getDeclaredMethod(level.key, String::class.java, String::class.java)
+} catch (e: Throwable) {
+    null
 }
 
 /**
@@ -106,8 +82,79 @@ fun logTimeSpendStamp() {
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
-fun log(input: Any?, prettyPrint: Boolean = true) =
-    logWithOffset(input, 0, prettyPrint)
+fun logVERBOSE(input: Any?, prettyPrint: Boolean = true) =
+    logWithOffsetVERBOSE(input, 0, prettyPrint)
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logDEBUG(input: Any?, prettyPrint: Boolean = true) =
+    logWithOffsetDEBUG(input, 0, prettyPrint)
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logINFO(input: Any?, prettyPrint: Boolean = true) =
+    logWithOffsetINFO(input, 0, prettyPrint)
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWARN(input: Any?, prettyPrint: Boolean = true) =
+    logWithOffsetWARN(input, 0, prettyPrint)
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logERROR(input: Any?, prettyPrint: Boolean = true) =
+    logWithOffsetERROR(input, 0, prettyPrint)
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWTF(input: Any?, prettyPrint: Boolean = true) =
+    logWithOffsetWTF(input, 0, prettyPrint)
+
 
 /**
  * ### Write into console / android logger serialized input with params:
@@ -121,11 +168,95 @@ fun log(input: Any?, prettyPrint: Boolean = true) =
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
-fun logWithOffset(input: Any?, offset: Int, prettyPrint: Boolean = true) {
+fun logWithOffsetVERBOSE(input: Any?, offset: Int, prettyPrint: Boolean = true) {
+    logWithOffset(input, offset, prettyPrint, level = Level.VERBOSE)
+}
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param offset if is logging used inside nested lambda, or inside library this is useful tool for logging upper level
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWithOffsetDEBUG(input: Any?, offset: Int, prettyPrint: Boolean = true) {
+    logWithOffset(input, offset, prettyPrint, level = Level.DEBUG)
+}
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param offset if is logging used inside nested lambda, or inside library this is useful tool for logging upper level
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWithOffsetINFO(input: Any?, offset: Int, prettyPrint: Boolean = true) {
+    logWithOffset(input, offset, prettyPrint, level = Level.INFO)
+}
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param offset if is logging used inside nested lambda, or inside library this is useful tool for logging upper level
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWithOffsetWARN(input: Any?, offset: Int, prettyPrint: Boolean = true) {
+    logWithOffset(input, offset, prettyPrint, level = Level.WARN)
+}
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param offset if is logging used inside nested lambda, or inside library this is useful tool for logging upper level
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWithOffsetERROR(input: Any?, offset: Int, prettyPrint: Boolean = true) {
+    logWithOffset(input, offset, prettyPrint, level = Level.ERROR)
+}
+
+/**
+ * ### Write into console / android logger serialized input with params:
+ * - name of sourcecode class entry
+ * - number of line in sourcecode
+ * - name of function where is this function used
+ *
+ * @param input any object that can be serialized using the GSON library
+ * @param offset if is logging used inside nested lambda, or inside library this is useful tool for logging upper level
+ * @param prettyPrint if is true serialized input will has "pretty" format
+ * @see LOGGER_IS_ENABLED
+ * @see LOGGER_CONSOLE_FORCE
+ */
+fun logWithOffsetWTF(input: Any?, offset: Int, prettyPrint: Boolean = true) {
+    logWithOffset(input, offset, prettyPrint, level = Level.WTF)
+}
+
+private fun logWithOffset(input: Any?, offset: Int, prettyPrint: Boolean = true, level: Level) {
     if (input != null && input is Exception) {
-        logData(input.trace, false, offset)
+        logData(input.trace, false, offset, level)
     } else {
-        logData(input, prettyPrint, offset)
+        logData(input, prettyPrint, offset, level)
     }
 }
 
@@ -138,7 +269,7 @@ fun logWithOffset(input: Any?, offset: Int, prettyPrint: Boolean = true) {
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
-private fun logData(input: Any?, prettyPrint: Boolean, offset: Int = 0) {
+private fun logData(input: Any?, prettyPrint: Boolean, offset: Int = 0, level: Level) {
 
     if (!LOGGER_IS_ENABLED) {
         return
@@ -147,7 +278,8 @@ private fun logData(input: Any?, prettyPrint: Boolean, offset: Int = 0) {
     val traceLine = getCurrentThreadTraceLine(offset)
     writeConsole(
         key = "${traceLine[0]} ${traceLine[1]}",
-        value = input.extractMessage(prettyPrint)
+        value = input.extractMessage(prettyPrint),
+        level = level
     )
 
 }
@@ -159,7 +291,10 @@ private fun Any?.extractMessage(prettyPrint: Boolean): String {
     this ?: return "data null"
 
     return when (this) {
-        is String -> this
+        is String -> {
+            if (isBlank() || isEmpty()) "EMPTY / BLANK STRING"
+            else this
+        }
         else -> try {
             this.toJson(prettyPrint)
         } catch (e: Throwable) {
@@ -172,17 +307,17 @@ private fun Any?.extractMessage(prettyPrint: Boolean): String {
  * ### just print input into console / android logger output
  * @see isAndroid
  */
-private fun writeConsole(key: String, value: String) {
+private fun writeConsole(key: String, value: String, level: Level) {
     if (!isAndroid()) {
-        println("$key $value")
+        println("${level.name}: $key $value")
     } else {
         try {
-            loggerMethod?.invoke(null, key, value)
+            extractAndroidLogMethod(level)
+                ?.invoke(null, key, value)
         } catch (e: Exception) {
-            println("$key $value")
+            println("${level.name}: $key $value")
         }
     }
-
 }
 
 /**
@@ -244,6 +379,5 @@ val Throwable?.trace: String
  */
 private fun Any?.toJson(prettyPrint: Boolean = false): String =
     GsonBuilder().apply {
-        if (prettyPrint)
-            setPrettyPrinting()
+        if (prettyPrint) setPrettyPrinting()
     }.create().toJson(this)
