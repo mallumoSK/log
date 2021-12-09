@@ -2,12 +2,12 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'maven'
-    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.0'
 }
 
 archivesBaseName = 'log'
 group 'tk.mallumo'
-version '9.0.0'
+version '10.0.0'
 
 repositories {
     jcenter()
@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.google.code.gson:gson:2.8.9'
     testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 }
 

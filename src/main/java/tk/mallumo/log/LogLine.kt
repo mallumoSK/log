@@ -55,6 +55,7 @@ var LOGGER_CONSOLE_FORCE = false
 /**
  * ### check if is library used in android project
  */
+@Suppress("unused")
 private fun isAndroid(): Boolean = loggerMethod != null && !LOGGER_CONSOLE_FORCE
 
 /**
@@ -82,6 +83,7 @@ private fun extractAndroidLogMethod(level: Level): Method? = try {
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
+@Suppress("unused")
 fun logVERBOSE(input: Any?, prettyPrint: Boolean = true) =
     logWithOffsetVERBOSE(input, 0, prettyPrint)
 
@@ -110,6 +112,7 @@ fun logDEBUG(input: Any?, prettyPrint: Boolean = true) =
  * @see LOGGER_IS_ENABLED
  * @see LOGGER_CONSOLE_FORCE
  */
+@Suppress("unused")
 fun logINFO(input: Any?, prettyPrint: Boolean = true) =
     logWithOffsetINFO(input, 0, prettyPrint)
 
