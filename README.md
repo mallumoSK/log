@@ -5,9 +5,10 @@
 ![https://mallumo.jfrog.io/artifactory/gradle-dev-local/tk/mallumo/log/](https://img.shields.io/maven-metadata/v?color=%234caf50&metadataUrl=https%3A%2F%2Fmallumo.jfrog.io%2Fartifactory%2Fgradle-dev-local%2Ftk%2Fmallumo%2Flog%2Fmaven-metadata.xml&style=for-the-badge "Version")
 
 #### current version:
-- KOTLIN: 1.6.0
+- KOTLIN: 1.6.10 ->1.6.10-10.1.0
 
 #### older version:
+ - KOTLIN: 1.6.0,  LOG:    10.0.0
  - KOTLIN: 1.5.10, LOG:    9.0.0
  - KOTLIN: 1.4.10, LOG:    8.3.0
 
