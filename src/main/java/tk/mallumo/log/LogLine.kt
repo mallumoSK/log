@@ -360,20 +360,23 @@ val Throwable?.trace: String
 
         // This is to reduce the amount of log spew that apps do in the non-error
         // condition of the network being unavailable.
-        var t = this
-        while (t != null) {
+        var t = this!!
+        while (t.cause != null) {
             if (t is UnknownHostException) {
                 return ""
             }
-            t = t.cause
+           t.cause?.also {
+               t =it
+           }
         }
 
         return StringWriter().use { sw ->
             PrintWriter(sw).use { pw ->
-                printStackTrace(pw)
+                t.printStackTrace(pw)
                 pw.flush()
+                sw.toString()
             }
-        }.toString()
+        }
     }
 
 /**
