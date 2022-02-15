@@ -4,7 +4,6 @@ import com.google.gson.GsonBuilder
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.lang.reflect.Method
-import java.net.UnknownHostException
 
 private enum class Level(val key: String) {
     VERBOSE("v"),
