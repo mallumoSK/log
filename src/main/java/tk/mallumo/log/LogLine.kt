@@ -354,29 +354,30 @@ fun getCurrentThreadTraceLine(offset: Int = 0): Array<String> = try {
 val Throwable?.trace: String
     get() {
 
-        if (this == null) {
-            return ""
+        return  if (this == null)   ""
+        else{
+//            var t = this
+//            while (t?.cause != null) {
+//                if (t is UnknownHostException) {
+//                    return ""
+//                }
+//                t.cause?.also {
+//                    t =it
+//                }
+//            }
+
+            return StringWriter().use { sw ->
+                PrintWriter(sw).use { pw ->
+                    this.printStackTrace(pw)
+                    pw.flush()
+                    sw.toString()
+                }
+            }
         }
 
         // This is to reduce the amount of log spew that apps do in the non-error
         // condition of the network being unavailable.
-        var t = this!!
-        while (t.cause != null) {
-            if (t is UnknownHostException) {
-                return ""
-            }
-           t.cause?.also {
-               t =it
-           }
-        }
 
-        return StringWriter().use { sw ->
-            PrintWriter(sw).use { pw ->
-                t.printStackTrace(pw)
-                pw.flush()
-                sw.toString()
-            }
-        }
     }
 
 /**
