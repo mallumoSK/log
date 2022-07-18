@@ -2,12 +2,12 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'maven'
-    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
 }
 
 archivesBaseName = 'log'
 group 'tk.mallumo'
-version '1.7.10-11.0.0'
+version '1.7.0-11.0.0'
 
 repositories {
     mavenCentral()
