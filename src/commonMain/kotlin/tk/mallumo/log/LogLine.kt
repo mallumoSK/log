@@ -1,38 +1,6 @@
 package tk.mallumo.log
 
 import com.google.gson.GsonBuilder
-import java.io.PrintWriter
-import java.io.StringWriter
-import java.lang.reflect.Method
-
-private enum class Level(val key: String) {
-    VERBOSE("v"),
-
-    /**
-     * Priority constant for the println method; use Log.d.
-     */
-    DEBUG("d"),
-
-    /**
-     * Priority constant for the println method; use Log.i.
-     */
-    INFO("i"),
-
-    /**
-     * Priority constant for the println method; use Log.w.
-     */
-    WARN("w"),
-
-    /**
-     * Priority constant for the println method; use Log.e.
-     */
-    ERROR("e"),
-
-    /**
-     * Priority constant for the println method.
-     */
-    WTF("wtf")
-}
 
 /**
  *
@@ -50,26 +18,6 @@ var LOGGER_IS_ENABLED = true
  * this prevent writing output to android logger output
  */
 var LOGGER_CONSOLE_FORCE = false
-
-/**
- * ### check if is library used in android project
- */
-@Suppress("unused")
-private fun isAndroid(): Boolean = loggerMethod != null && !LOGGER_CONSOLE_FORCE
-
-/**
- * ### method reference of android function ```android.util.Log.e```
- */
-private val loggerMethod: Method? by lazy {
-    extractAndroidLogMethod(Level.ERROR)
-}
-
-private fun extractAndroidLogMethod(level: Level): Method? = try {
-    Class.forName("android.util.Log")
-        .getDeclaredMethod(level.key, String::class.java, String::class.java)
-} catch (e: Throwable) {
-    null
-}
 
 /**
  * ### Write into console / android logger serialized input with params:
@@ -297,6 +245,7 @@ private fun Any?.extractMessage(prettyPrint: Boolean): String {
             if (isBlank() || isEmpty()) "EMPTY / BLANK STRING"
             else this
         }
+
         else -> try {
             this.toJson(prettyPrint)
         } catch (e: Throwable) {
@@ -306,21 +255,9 @@ private fun Any?.extractMessage(prettyPrint: Boolean): String {
 }
 
 /**
- * ### just print input into console / android logger output
- * @see isAndroid
+ * ### Transfer stack trace into String
  */
-private fun writeConsole(key: String, value: String, level: Level) {
-    if (!isAndroid()) {
-        println("${level.name}: $key $value")
-    } else {
-        try {
-            extractAndroidLogMethod(level)
-                ?.invoke(null, key, value)
-        } catch (e: Exception) {
-            println("${level.name}: $key $value")
-        }
-    }
-}
+val Throwable?.trace: String get() = this?.stackTraceToString() ?: ""
 
 /**
  * ### extract info about source code line
@@ -330,7 +267,7 @@ private fun writeConsole(key: String, value: String, level: Level) {
  * - index [0] source file name and line in code
  * - index [1] name of function
  */
-fun getCurrentThreadTraceLine(offset: Int = 0): Array<String> = try {
+internal fun getCurrentThreadTraceLine(offset: Int): Array<String> = try {
 
     val data = Thread.currentThread().stackTrace
     val indexLL = data.indexOfLast { it.fileName == "LogLine.kt" }
@@ -348,42 +285,17 @@ fun getCurrentThreadTraceLine(offset: Int = 0): Array<String> = try {
 }
 
 /**
- * ### Transfer stack trace into String
- */
-val Throwable?.trace: String
-    get() {
-
-        return  if (this == null)   ""
-        else{
-//            var t = this
-//            while (t?.cause != null) {
-//                if (t is UnknownHostException) {
-//                    return ""
-//                }
-//                t.cause?.also {
-//                    t =it
-//                }
-//            }
-
-            return StringWriter().use { sw ->
-                PrintWriter(sw).use { pw ->
-                    this.printStackTrace(pw)
-                    pw.flush()
-                    sw.toString()
-                }
-            }
-        }
-
-        // This is to reduce the amount of log spew that apps do in the non-error
-        // condition of the network being unavailable.
-
-    }
-
-/**
  * ### transfer any object into json
  * @param prettyPrint enable /disable nice formatted output
  */
-private fun Any?.toJson(prettyPrint: Boolean = false): String =
-    GsonBuilder().apply {
-        if (prettyPrint) setPrettyPrinting()
-    }.create().toJson(this)
+internal fun Any?.toJson(prettyPrint: Boolean): String = GsonBuilder().apply {
+    if (prettyPrint) setPrettyPrinting()
+}.create().toJson(this)
+
+
+/**
+ * ### just print input into console / android logger output
+ * @see isAndroid
+ */
+internal expect fun writeConsole(key: String, value: String, level: Level)
+
