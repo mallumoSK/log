@@ -5,14 +5,14 @@ plugins {
 }
 
 group = "tk.mallumo"
-version = "1.7.20-12.0.0"
+version = "1.7.20-12.0.1"
 
 val gson = "com.google.code.gson:gson:2.9.1"
 
 kotlin {
 
     android {
-        publishLibraryVariants("release", "debug")
+        publishLibraryVariants("release")
         publishLibraryVariantsGroupedByFlavor = true
     }
     jvm {
@@ -40,10 +40,7 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
-//        minSdk = 24
-//        targetSdk = 33
-
-        minSdkVersion(24)
+        minSdkVersion(21)
         targetSdkVersion(31)
     }
     compileOptions {
