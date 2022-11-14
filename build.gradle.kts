@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "tk.mallumo"
-version = "1.7.20-12.0.1"
+version = "1.7.20-12.0.2"
 
 val gson = "com.google.code.gson:gson:2.9.1"
 
@@ -17,7 +17,7 @@ kotlin {
     }
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = "1.8"
         }
 
     }
@@ -44,8 +44,8 @@ android {
         targetSdkVersion(31)
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     lintOptions.isAbortOnError = false
     lintOptions.isCheckReleaseBuilds = false
@@ -53,3 +53,6 @@ android {
 }
 apply("secure.gradle")
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+}
