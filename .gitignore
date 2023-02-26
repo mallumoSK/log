@@ -27,5 +27,8 @@ hs_err_pid*
 /.idea/
 /gradle/wrapper/
 /local.properties
-/gradle.properties
 /build.gradle.backup
+/test/android/build/
+/test/desktop/build/
+/buildSrc/build/
+/buildSrc/.gradle/

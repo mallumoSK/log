@@ -1,6 +1,6 @@
 package tk.mallumo.log
 
-import com.google.gson.GsonBuilder
+import kotlin.native.concurrent.*
 
 /**
  *
@@ -204,7 +204,7 @@ fun logWithOffsetWTF(input: Any?, offset: Int, prettyPrint: Boolean = true) {
 
 private fun logWithOffset(input: Any?, offset: Int, prettyPrint: Boolean = true, level: Level) {
     if (input != null && input is Exception) {
-        logData(input.trace, false, offset, level)
+        logData(input.stackTraceToString(), false, offset, level)
     } else {
         logData(input, prettyPrint, offset, level)
     }
@@ -255,11 +255,6 @@ private fun Any?.extractMessage(prettyPrint: Boolean): String {
 }
 
 /**
- * ### Transfer stack trace into String
- */
-val Throwable?.trace: String get() = this?.stackTraceToString() ?: ""
-
-/**
  * ### extract info about source code line
  *
  * @param offset = if is logger used inside nested lambda, or inside library this is useful tool for logging upper level
@@ -267,35 +262,16 @@ val Throwable?.trace: String get() = this?.stackTraceToString() ?: ""
  * - index [0] source file name and line in code
  * - index [1] name of function
  */
-internal fun getCurrentThreadTraceLine(offset: Int): Array<String> = try {
-
-    val data = Thread.currentThread().stackTrace
-    val indexLL = data.indexOfLast { it.fileName == "LogLine.kt" }
-    val element = (indexLL + 1 + offset).let { stackindex ->
-        if (stackindex > data.lastIndex) {
-            data.last()
-        } else {
-            data[stackindex]
-        }
-    }
-
-    arrayOf("(${element.fileName}:${element.lineNumber})", "${element.methodName}-->")
-} catch (e: Exception) {
-    arrayOf("log", "")
-}
+internal expect fun getCurrentThreadTraceLine(offset: Int): Array<String>
 
 /**
  * ### transfer any object into json
  * @param prettyPrint enable /disable nice formatted output
  */
-internal fun Any?.toJson(prettyPrint: Boolean): String = GsonBuilder().apply {
-    if (prettyPrint) setPrettyPrinting()
-}.create().toJson(this)
-
+internal expect fun Any?.toJson(prettyPrint: Boolean): String
 
 /**
  * ### just print input into console / android logger output
- * @see isAndroid
  */
 internal expect fun writeConsole(key: String, value: String, level: Level)
 

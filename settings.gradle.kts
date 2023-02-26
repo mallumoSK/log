@@ -7,15 +7,16 @@ pluginManagement {
         maven("https://mallumo.jfrog.io/artifactory/gradle-dev-local")
     }
     plugins {
-        kotlin("multiplatform").version(extra["version_kotlin"] as String)
-        kotlin("android").version(extra["version_kotlin"] as String)
-        id("com.android.application").version(extra["version_agp"] as String)
-        id("com.android.library").version(extra["version_agp"] as String)
+        kotlin("multiplatform").version(extra["version.kotlin"] as String)
+        kotlin("jvm").version(extra["version.kotlin"] as String)
+        kotlin("android").version(extra["version.kotlin"] as String)
+        id("com.android.application").version(extra["version.agp"] as String)
+        id("com.android.library").version(extra["version.agp"] as String)
     }
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
@@ -24,4 +25,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "log"
-
+//include(":test:android")
+//include(":test:desktop")

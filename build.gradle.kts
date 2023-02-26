@@ -1,3 +1,5 @@
+import android.annotation.*
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -5,9 +7,7 @@ plugins {
 }
 
 group = "tk.mallumo"
-version = "1.7.20-12.0.2"
-
-val gson = "com.google.code.gson:gson:2.9.1"
+version = "1.8.10-13.0.0"
 
 kotlin {
 
@@ -19,37 +19,52 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
         }
-
     }
+    js(IR)
 
     sourceSets {
-        @Suppress("UNUSED_VARIABLE") val commonMain by getting {
+        @Suppress("UNUSED_VARIABLE") val commonMain by getting
+        @Suppress("UNUSED_VARIABLE") val jsMain by getting
+        @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
             dependencies {
-                implementation(gson)
+                implementation("com.google.code.gson:gson:${extra["version.gson"]}")
             }
         }
-
-        @Suppress("UNUSED_VARIABLE") val jvmMain by getting
-        @Suppress("UNUSED_VARIABLE") val androidMain by getting
-
+        @Suppress("UNUSED_VARIABLE") val androidMain by getting {
+            dependencies {
+                implementation("com.google.code.gson:gson:${extra["version.gson"]}")
+            }
+        }
     }
 }
 
+@Suppress("UnstableApiUsage", "OldTargetApi")
 android {
     compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(31)
+        namespace = "tk.mallumo.log"
+        minSdk = 21
+        targetSdk = 31
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    lintOptions.isAbortOnError = false
-    lintOptions.isCheckReleaseBuilds = false
-    lintOptions.disable("TypographyFractions", "TypographyQuotes")
+    lintOptions {
+        isCheckReleaseBuilds = false
+        isAbortOnError = false
+        disable("TypographyFractions", "TypographyQuotes")
+    }
+    lint {
+        abortOnError = false
+        checkReleaseBuilds = false
+        disable += setOf("TypographyFractions", "TypographyQuotes")
+    }
+    buildFeatures {
+        buildConfig = false
+    }
 }
 apply("secure.gradle")
 
