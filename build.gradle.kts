@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "tk.mallumo"
-version = "1.8.10-13.0.0"
+version = "1.8.0-13.0.0"
 
 kotlin {
 
