@@ -21,8 +21,6 @@ class Toolkit private constructor(
                     ?.reader()
                     ?.use { properties.load(it) }
 
-                properties.propertyNames().asIterator().forEach { println(it) }
-
                 instance = Toolkit(project.extensions.extraProperties, properties)
             }
             return instance

@@ -90,8 +90,6 @@ publishing {
                 }
             }
         }
-        println(gpr_name)
-        println(gpr_key)
         if (gpr_name != null && gpr_key != null) {
             maven {
                 name = "github"
@@ -101,6 +99,10 @@ publishing {
                     password = gpr_key
                 }
             }
+        }
+        maven {
+            name = "test"
+            url = uri("file:///tmp/___")
         }
     }
     publications {
