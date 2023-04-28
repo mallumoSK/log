@@ -5,6 +5,9 @@ plugins {
     `java-gradle-plugin`
 }
 
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.8.0")
+}
 
 repositories {
     mavenCentral()
@@ -12,4 +15,10 @@ repositories {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
 }

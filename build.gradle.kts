@@ -6,8 +6,12 @@ plugins {
     id("maven-publish")
 }
 
-group = "tk.mallumo"
-version = "1.8.0-13.0.0"
+val toolkit by lazy {
+    Toolkit.get(project)
+}
+
+group = Deps.lib.group
+version = Deps.lib.version
 
 kotlin {
 
@@ -17,7 +21,7 @@ kotlin {
     }
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "11"
         }
     }
     js(IR)
@@ -40,17 +44,18 @@ kotlin {
 
 @Suppress("UnstableApiUsage", "OldTargetApi")
 android {
-    compileSdk = 31
+
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
-        namespace = "tk.mallumo.log"
+        namespace = "${Deps.lib.group}.${Deps.lib.artifact}"
         minSdk = 21
         targetSdk = 31
+        compileSdk = 31
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_11
     }
     lintOptions {
         isCheckReleaseBuilds = false
@@ -66,8 +71,46 @@ android {
         buildConfig = false
     }
 }
-apply("secure.gradle")
 
+@Suppress("LocalVariableName")
+publishing {
+    val jfrog_name by toolkit
+    val jfrog_key by toolkit
+    val gpr_name = toolkit["gpr.name"] ?: System.getenv("GITHUB_USERNAME")
+    val gpr_key = toolkit["gpr.key"] ?: System.getenv("GITHUB_TOKEN")
+
+    repositories {
+        if (jfrog_name != null && jfrog_key != null) {
+            maven {
+                name = "mallumo.jfrog.io"
+                url = uri("https://mallumo.jfrog.io/artifactory/gradle-dev-local/")
+                credentials {
+                    username = jfrog_name
+                    password = jfrog_key
+                }
+            }
+        }
+        println(gpr_name)
+        println(gpr_key)
+        if (gpr_name != null && gpr_key != null) {
+            maven {
+                name = "github"
+                url = uri("https://maven.pkg.github.com/mallumosk/log")
+                credentials {
+                    username = gpr_name
+                    password = gpr_key
+                }
+            }
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            groupId = Deps.lib.group
+            artifactId = Deps.lib.artifact
+            version = Deps.lib.version
+        }
+    }
+}
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+    toolchain. languageVersion.set(JavaLanguageVersion.of(11))
 }
