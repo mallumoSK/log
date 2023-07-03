@@ -2,12 +2,12 @@
 
 ## Simple kotlin library for logging android and desktop projects
 
-![https://mallumo.jfrog.io/artifactory/gradle-dev-local/tk/mallumo/log/](https://img.shields.io/maven-metadata/v?color=%234caf50&metadataUrl=https%3A%2F%2Fmallumo.jfrog.io%2Fartifactory%2Fgradle-dev-local%2Ftk%2Fmallumo%2Flog%2Fmaven-metadata.xml&style=for-the-badge "Version")
+![Maven metadata URL](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo.repsy.io%2Fmvn%2Fmallumo%2Fpublic%2Ftk%2Fmallumo%2Flog%2Fmaven-metadata.xml)
 
 ```groovy
 repositories {
     maven {
-        url = uri("https://mallumo.jfrog.io/artifactory/gradle-dev-local")
+        url = uri("https://repo.repsy.io/mvn/mallumo/public")
     }
 }
 

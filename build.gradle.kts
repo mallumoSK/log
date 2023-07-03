@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -15,7 +17,7 @@ kotlin {
     }
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "11"
         }
     }
     js(IR)
@@ -48,8 +50,8 @@ android {
         compileSdk = 31
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     @Suppress("DEPRECATION")
     lintOptions {
@@ -66,17 +68,34 @@ android {
         buildConfig = false
     }
 }
-
-publishing {
-//    publications {
-//        register<MavenPublication>("gpr") {
-//            groupId = Deps.lib.group
-//            artifactId = Deps.lib.artifact
-//            version = Deps.lib.version
-//        }
-//    }
+val prop = Properties().apply {
+    project.rootProject.file("local.properties").reader().use {
+        load(it)
+    }
 }
 
-//java {
-//    toolchain.languageVersion.set(JavaLanguageVersion.of("1.8"))
-//}
+publishing {
+    val rName = prop["repsy.name"] as String
+    val rKey = prop["repsy.key"] as String
+    repositories {
+        maven {
+            name = "repsy.io"
+            url = uri("https://repo.repsy.io/mvn/${rName}/public")
+            credentials {
+                username = rName
+                password = rKey
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = Deps.lib.group
+            artifactId = Deps.lib.artifact
+            version = Deps.lib.version
+        }
+    }
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+}
