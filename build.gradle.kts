@@ -67,15 +67,20 @@ android {
     }
 }
 
-//publishing {
-//    publications {
-//        register<MavenPublication>("gpr") {
-//            groupId = Deps.lib.group
-//            artifactId = Deps.lib.artifact
-//            version = Deps.lib.version
-//        }
-//    }
-//}
+publishing {
+    repositories {
+        maven {
+            url = uri("file:///tmp/___")
+        }
+    }
+    publications {
+        register<MavenPublication>("gpr") {
+            groupId = Deps.lib.group
+            artifactId = Deps.lib.artifact
+            version = Deps.lib.version
+        }
+    }
+}
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 }
