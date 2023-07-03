@@ -9,11 +9,17 @@ pluginManagement {
         maven("https://jitpack.io")
     }
     plugins {
-        kotlin("multiplatform").version(extra["version.kotlin"] as String)
-        kotlin("jvm").version(extra["version.kotlin"] as String)
-        kotlin("android").version(extra["version.kotlin"] as String)
-        id("com.android.application").version(extra["version.agp"] as String)
-        id("com.android.library").version(extra["version.agp"] as String)
+//        kotlin("multiplatform").version(extra["version.kotlin"] as String)
+//        kotlin("jvm").version(extra["version.kotlin"] as String)
+//        kotlin("android").version(extra["version.kotlin"] as String)
+//        id("com.android.application").version(extra["version.agp"] as String)
+//        id("com.android.library").version(extra["version.agp"] as String)
+
+        kotlin("multiplatform").version("1.8.20")
+        kotlin("jvm").version("1.8.20")
+        kotlin("android").version("1.8.20")
+        id("com.android.application").version("7.3.0")
+        id("com.android.library").version("7.3.0")
     }
 }
 
