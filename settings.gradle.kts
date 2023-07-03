@@ -1,10 +1,12 @@
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
         google()
         gradlePluginPortal()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven("https://mallumo.jfrog.io/artifactory/gradle-dev-local")
+        maven("https://jitpack.io")
     }
     plugins {
         kotlin("multiplatform").version(extra["version.kotlin"] as String)
@@ -21,7 +23,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-        maven("https://mallumo.jfrog.io/artifactory/gradle-dev-local")
+        maven("https://jitpack.io")
     }
 }
 rootProject.name = "log"
