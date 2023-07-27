@@ -6,7 +6,7 @@ import com.google.gson.*
  * ### just print input into console / android logger output
  */
 internal actual fun writeConsole(key: String, value: String, level: Level) {
-    if (level == Level.ERROR) {
+    if (level in arrayOf(Level.ERROR, Level.WTF, Level.WARN)) {
         System.err.println("${level.name}: $key $value")
     } else {
         println("${level.name}: $key $value")

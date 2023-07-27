@@ -1,5 +1,3 @@
-import java.util.*
-
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
@@ -11,31 +9,39 @@ version = Deps.lib.version
 
 kotlin {
 
-    android {
+    androidTarget {
         publishLibraryVariants("release")
         publishLibraryVariantsGroupedByFlavor = true
     }
+
     jvm {
         compilations.all {
             kotlinOptions.jvmTarget = "11"
         }
     }
+
     js(IR)
 
     sourceSets {
-        @Suppress("UNUSED_VARIABLE") val commonMain by getting
-        @Suppress("UNUSED_VARIABLE") val jsMain by getting
-        @Suppress("UNUSED_VARIABLE") val jvmMain by getting {
+        val commonMain by getting
+        val jsMain by getting
+        val jvmMain by getting {
             dependencies {
                 implementation(Deps.gson)
             }
         }
-        @Suppress("UNUSED_VARIABLE") val androidMain by getting {
+        val androidMain by getting {
             dependencies {
                 implementation(Deps.gson)
             }
         }
     }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
 }
 
 @Suppress("UnstableApiUsage", "OldTargetApi")
@@ -46,18 +52,11 @@ android {
     defaultConfig {
         namespace = "${Deps.lib.group}.${Deps.lib.artifact}"
         minSdk = 21
-        targetSdk = 31
         compileSdk = 31
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    @Suppress("DEPRECATION")
-    lintOptions {
-        isCheckReleaseBuilds = false
-        isAbortOnError = false
-        disable("TypographyFractions", "TypographyQuotes")
     }
     lint {
         abortOnError = false
@@ -68,15 +67,10 @@ android {
         buildConfig = false
     }
 }
-val prop = Properties().apply {
-    project.rootProject.file("local.properties").reader().use {
-        load(it)
-    }
-}
 
 publishing {
-    val rName = prop["repsy.name"] as String
-    val rKey = prop["repsy.key"] as String
+    val rName = propertiesLocal["repsy.name"]
+    val rKey = propertiesLocal["repsy.key"]
     repositories {
         maven {
             name = "repsy.io"
