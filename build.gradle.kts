@@ -38,12 +38,6 @@ kotlin {
     }
 }
 
-repositories {
-    google()
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-}
-
 @Suppress("UnstableApiUsage", "OldTargetApi")
 android {
 
@@ -89,6 +83,13 @@ publishing {
         }
     }
 }
+
+repositories {
+    google()
+    mavenCentral()
+    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+}
+
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(11))
