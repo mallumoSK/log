@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    id("com.android.library")
+    kotlin("multiplatform") version Deps.kotlin
+    id("com.android.library") version Deps.agp
     id("maven-publish")
 }
 
@@ -9,18 +9,17 @@ version = Deps.lib.version
 
 kotlin {
 
-    androidTarget {
-        publishLibraryVariants("release")
-        publishLibraryVariantsGroupedByFlavor = true
-    }
+    js(IR)
 
     jvm {
         compilations.all {
             kotlinOptions.jvmTarget = "11"
         }
     }
-
-    js(IR)
+    androidTarget {
+        publishLibraryVariants("release")
+        publishLibraryVariantsGroupedByFlavor = true
+    }
 
     sourceSets {
         val commonMain by getting
@@ -45,8 +44,8 @@ android {
 
     defaultConfig {
         namespace = "${Deps.lib.group}.${Deps.lib.artifact}"
-        minSdk = 21
         compileSdk = 31
+        minSdk = 21
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -76,21 +75,15 @@ publishing {
             }
         }
     }
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = Deps.lib.group
-            artifactId = Deps.lib.artifact
-            version = Deps.lib.version
-        }
-    }
 }
 
 repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven("https://repo.repsy.io/mvn/mallumo/public")
+    gradlePluginPortal()
 }
-
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(11))
