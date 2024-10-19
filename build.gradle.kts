@@ -1,51 +1,59 @@
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.*
+import org.jetbrains.kotlin.gradle.dsl.*
+import java.util.*
+
 plugins {
-    kotlin("multiplatform") version Deps.kotlin
-    id("com.android.library") version Deps.agp
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.lib)
     id("maven-publish")
 }
 
-group = Deps.lib.group
-version = Deps.lib.version
+group = libs.me.log.get().group
+version = libs.versions.me.log.get()
 
 kotlin {
-
-    js(IR)
-
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
+    jvmToolchain(17)
+    js(IR) {
+        browser()
     }
+
+    wasmJs {
+        browser()
+    }
+    js {
+        browser()
+    }
+    jvm()
+
     androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
         publishLibraryVariants("release")
         publishLibraryVariantsGroupedByFlavor = true
     }
 
     sourceSets {
-        val commonMain by getting
-        val jsMain by getting
-        val jvmMain by getting {
-            dependencies {
-                implementation(Deps.gson)
-            }
+        jvmMain.dependencies {
+            implementation(libs.gson)
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(Deps.gson)
-            }
+        androidMain.dependencies {
+            implementation(libs.gson)
         }
     }
 }
 
-@Suppress("UnstableApiUsage", "OldTargetApi")
+@Suppress("OldTargetApi")
 android {
-
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
-        namespace = "${Deps.lib.group}.${Deps.lib.artifact}"
-        compileSdk = 31
-        minSdk = 21
+        namespace = "${libs.me.log.get().group}.${libs.me.log.get().name}"
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk= libs.versions.android.targetSdk.get().toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -54,7 +62,13 @@ android {
     lint {
         abortOnError = false
         checkReleaseBuilds = false
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
         disable += setOf("TypographyFractions", "TypographyQuotes")
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
     buildFeatures {
         buildConfig = false
@@ -77,14 +91,25 @@ publishing {
     }
 }
 
-repositories {
-    google()
-    mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-    maven("https://repo.repsy.io/mvn/mallumo/public")
-    gradlePluginPortal()
-}
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+val Project.propertiesLocal: LocalProperties get() = LocalProperties.get(this)
+
+class LocalProperties private constructor(private val project: Project) {
+    val prop = Properties().apply {
+        project.rootProject.file("local.properties").reader().use {
+            load(it)
+        }
+    }
+
+    companion object {
+        private lateinit var instance: LocalProperties
+        internal fun get(project: Project): LocalProperties {
+            if (!::instance.isInitialized) {
+                instance = LocalProperties(project)
+            }
+            return instance
+        }
+    }
+
+    operator fun get(key: String): String? = prop[key] as? String
 }

@@ -27,3 +27,4 @@ hs_err_pid*
 /test/desktop/build/
 /buildSrc/build/
 /buildSrc/.gradle/
+/.kotlin/metadata/kotlinTransformedMetadataLibraries/org.jetbrains.kotlin-kotlin-stdlib-2.0.21-commonMain-WPEnbA.klib

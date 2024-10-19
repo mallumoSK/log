@@ -1,0 +1,54 @@
+[versions]
+kotlin_core = "2.0.21"
+#kotlin_ksp = "2.0.21-1.0.25"
+android_agp = "8.2.2"
+#
+me_log = "2.0.21-1.1.0"
+#me_utils = "2.0.21-1.1.0"
+#
+#kdb_sqlite = "3.39.3.0"
+#kdb_mysql = "8.0.33"
+#kdb_mariadb = "3.4.1"
+#
+#me_kdb_core = "2.0.21-1.0.25-1.4.0"
+#me_kdb_ksp = "2.0.21-1.0.25-1.4.0"
+#me_nav_core = "2.0.21-1.0.25-1.3.0"
+#me_nav_ksp = "2.0.21-1.0.25-1.3.0"
+#
+android-minSdk = "21"
+android-targetSdk = "31"
+#
+gson = "2.11.0"
+#
+[libraries]
+#
+#kdb-sqlite = { module = "org.xerial:sqlite-jdbc", version.ref = "kdb_sqlite" }
+#kdb-mysql = { module = "mysql:mysql-connector-java", version.ref = "kdb_mysql" }
+#kdb-mariadb = { module = "org.mariadb.jdbc:mariadb-java-client", version.ref = "kdb_mariadb" }
+#me-kdb-core = { module = "tk.mallumo:kdb-core", version.ref = "me_kdb_core" }
+#me-kdb-ksp = { module = "tk.mallumo:kdb-ksp", version.ref = "me_kdb_ksp" }
+#me-nav-core = { module = "tk.mallumo:navigation-core", version.ref = "me_nav_core" }
+#me-nav-ksp = { module = "tk.mallumo:navigation-ksp", version.ref = "me_nav_ksp" }
+me-log = { module = "tk.mallumo:log", version.ref = "me_log" }
+#me-utils = { module = "tk.mallumo:utils", version.ref = "me_utils" }
+gson = {  module = "com.google.code.gson:gson" , version.ref = "gson" }
+#
+#kotlin-ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "kotlin_ksp" }
+#kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin_datetime" }
+#kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin_coroutines" }
+#kotlin-coroutines-js = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-js", version.ref = "kotlin_coroutines" }
+#
+[bundles]
+
+
+#me-kdb-mysql = ["me-kdb-core", "kdb-mysql"]
+#me-kdb-mariadb = ["me-kdb-core", "kdb-mariadb"]
+#me-kdb-sqlite = ["me-kdb-core", "kdb-sqlite"]
+
+[plugins]
+android-lib = { id = "com.android.library", version.ref = "android_agp" }
+#kotlin-ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin_ksp" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin_core" }
+#kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin_core" }
+#shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow"  }
+
