@@ -1,0 +1,35 @@
+product:
+  type: kmp/lib
+  platforms: [ jvm, android, js, wasmJs ]
+
+dependencies@jvm:
+  - $libs.gson
+
+dependencies@android:
+  - $libs.gson
+
+settings:
+  jvm:
+    release: 17
+  android:
+    namespace: tk.mallumo.log
+    compileSdk: 31
+    minSdk: 21
+  publishing:
+    enabled: true
+    group: tk.mallumo
+    artifactId: log
+    version: 2.2.21-1.1.0
+    publishSources: true
+
+repositories:
+  - id: mavenLocal
+    url: mavenLocal
+    publish: true
+  - id: repsy
+    url: https://repo.repsy.io/user42380946/maven
+    publish: true
+    credentials:
+      file: //local.properties
+      usernameKey: repsy.user
+      passwordKey: repsy.token
