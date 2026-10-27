@@ -11,7 +11,7 @@ gson = "2.13.2"
 #
 [libraries]
 me-log = { module = "tk.mallumo:log", version.ref = "me_log" }
-gson = {  module = "com.google.code.gson:gson" , version.ref = "gson" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 #
 [plugins]
 android-lib = { id = "com.android.library", version.ref = "android_agp" }

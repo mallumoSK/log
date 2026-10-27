@@ -2,12 +2,20 @@
 
 ## Simple kotlin library for logging android and desktop projects
 
-![Maven metadata URL](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo.repsy.io%2Fmvn%2Fmallumo%2Fpublic%2Ftk%2Fmallumo%2Flog%2Fmaven-metadata.xml)
+![Maven metadata URL](https://img.shields.io/maven-metadata/v?metadataUrl=https%3A%2F%2Frepo.repsy.io%2Fuser42380946%2Fmaven%2Ftk%2Fmallumo%2Flog%2Fmaven-metadata.xml)
+
+```bash
+clear && tools/commit-llama.sh  "$(pwd)"
+```
+
+```bash
+clear && tools/commit-report-llama-ui.sh "$(pwd)"
+```
 
 ```groovy
 repositories {
     maven {
-        url = uri("https://repo.repsy.io/mvn/mallumo/public")
+        url = uri("https://repo.repsy.io/user42380946/maven")
     }
 }
 
@@ -17,12 +25,15 @@ dependencies {
 ```
 
 ### GLOBAL Enable / Disable by static variable:
+
 ```kotlin
 tk.mallumo.log.LOGGER_IS_ENABLED
 ```
 
 ### Enable / Disable by static variable:
-####  if is library used in android project BUT in junit test, this prevent writing output to android logger output
+
+#### if is library used in android project BUT in junit test, this prevent writing output to android logger output
+
 ```kotlin
 tk.mallumo.log.LOGGER_CONSOLE_FORCE
 ```
@@ -40,6 +51,7 @@ tk.mallumo.log.logDEBUG("123")
 ```
 
 ## Usage 2
+
 ```kotlin
 data class Input(var itemx: String = "x")
 tk.mallumo.log.logWARN(input = Input(), prettyPrin = false)
