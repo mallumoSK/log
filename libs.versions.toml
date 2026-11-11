@@ -1,6 +1,5 @@
 [versions]
 gson = "2.15.0"
-log = "2.4.21-1.1.0"
 #
 [libraries]
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
