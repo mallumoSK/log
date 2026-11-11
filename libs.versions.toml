@@ -1,14 +1,5 @@
 [versions]
-kotlin_core = "2.2.21"
-android_agp = "8.2.2"
-#
-me_log = "2.2.21-1.1.0"
-#
-android-minSdk = "21"
-android-targetSdk = "31"
-#
-gson = "2.13.2"
+gson = "2.15.0"
 #
 [libraries]
-me-log = { module = "tk.mallumo:log", version.ref = "me_log" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

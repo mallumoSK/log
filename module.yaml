@@ -8,18 +8,17 @@ dependencies@jvm:
 dependencies@android:
   - $libs.gson
 
+apply:
+  - libs.module-template.yaml
+
 settings:
-  jvm:
-    release: 17
   android:
     namespace: tk.mallumo.log
-    compileSdk: 31
-    minSdk: 21
   publishing:
     enabled: true
     group: tk.mallumo
     artifactId: log
-    version: 2.2.21-1.1.0
+    version: 2.4.21-1.1.0
     publishSources: true
 
 repositories:
